@@ -1,5 +1,6 @@
-# exclude temporary file of SCons
+# exclude temporary files of SCons
 /.sconsign.dblite
+/config.log
 
 # exclude temporary files of PDFLaTeX
 /tex/*
