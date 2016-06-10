@@ -20,6 +20,8 @@ back your work using pull requests.
 
 ## Usage
 
+The directory `tex` contains L<sup>A</sup>T<sub>E</sub>X source code
+and resulting PDFs, while `gfx` contains graphics.
 The main component of the template is the new Beamer theme "Stuttgart",
 located in `tex/beamerthemeStuttgart.sty`.
 Also included is an example presentation in `tex/talk.pdf`
@@ -43,16 +45,15 @@ Change to this folder and execute
 scons
 ```
 and you're done.
-You can clean up the generated files using
+This not only compiles the presentation using the right amount of
+L<sup>A</sup>T<sub>E</sub>X calls (very much similar to `latexmk`),
+but generates also a separate handout in `tex/handout.pdf`,
+which contains the slides in Beamer's `handout` mode
+(e.g., ignoring `pause` commands) compressed with 4 pages per sheet.
+You can clean up all generated files using
 ```
 scons -c
 ```
-
-This not only compiles the presentation using the right amount of
-L<sup>A</sup>T<sub>E</sub>X calls, but generates also a separate
-handout in `tex/handout.pdf`, which contains the slides in Beamer's
-`handout` mode (e.g., ignoring `pause` commands) compressed with
-4 pages per sheet.
 
 ### PDFL<sup>A</sup>T<sub>E</sub>X
 
