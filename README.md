@@ -50,7 +50,7 @@ scons -c
 
 This not only compiles the presentation using the right amount of
 L<sup>A</sup>T<sub>E</sub>X calls, but generates also a separate
-handout in `handout.pdf`, which contains the slides in Beamer's
+handout in `tex/handout.pdf`, which contains the slides in Beamer's
 `handout` mode (e.g., ignoring `pause` commands) compressed with
 4 pages per sheet.
 
