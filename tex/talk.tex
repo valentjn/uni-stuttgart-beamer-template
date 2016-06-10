@@ -8,35 +8,28 @@
 % TikZ
 \usepackage{tikz}
 
-% TikZ libraries
-\usetikzlibrary{decorations.text}
-
-% text along an arrow
-% (from LaTeX Stack Exchange: https://tex.stackexchange.com/a/154769,
-% by Gonzalo Medina: https://tex.stackexchange.com/users/3954/gonzalo-medina,
-% licensed under CC BY-SA: https://creativecommons.org/licenses/by-sa/3.0/)
-\tikzset{
-    textalongpath/.style 2 args={
-        decoration={
-            text align={left indent=#1},
-            text along path,
-            text={#2}
-        },
-        decorate
-    }
-}
-
-% Beamer theme
+% Beamer theme - options:
+% - navigationDotsLocation: specify location of the dots in the headline
+%   - near: display the dots near the section names (default)
+%   - below: display the dots below the section names
+% - titlePageInstituteLogo: location of institute logo file on the title page
+%   (default: ../gfx/logos/logo_ipvs)
+% - titlePageDepartmentLogo: location of department logo file on the title page
+%   (default: ../gfx/logos/logo_sgs)
+% - titlePageBigLogo: location of big logo file on the title page
+%   (default: ../gfx/logos/logo_simtech)
+% - thanksPageBigGraphics: location of the big graphics on the thanks page
+%   (default: ../gfx/tikz/gfx_title)
+% - thanksPageInstituteLogo: location of institute logo file on the thanks page
+%   (default: ../gfx/logos/logo_ipvs)
+% - thanksPageDepartmentLogo: location of department logo file on the thanks page
+%   (default: ../gfx/logos/logo_sgs)
+% - thanksPageBigLogo: location of big logo file on the thanks page
+%   (default: ../gfx/logos/logo_simtech)
 \usetheme[
-    % navigationDotsLocation:
-    %     near displays the dots in the headline near the section names (default)
-    %     below displays the dots in the headline below the section names
     thanksPageBigGraphics=../gfx/thanks,
-    %titlePageMarginAboveTitle=2em
+    %navigationDotsLocation=below,
 ]{Stuttgart}
-
-% directories with graphics
-\graphicspath{{../gfx/}}
 
 % metadata
 \title{Time Travel with the Flux Capacitor}
