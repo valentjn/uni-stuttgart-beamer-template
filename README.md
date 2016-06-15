@@ -2,7 +2,7 @@
 
 This is an unofficial L<sup>A</sup>T<sub>E</sub>X template for Beamer
 presentations by and for members of the University of Stuttgart,
-Germany, following the new Corporate Design the university has given
+Germany, following the new corporate design the university has given
 itself in 2016.
 
 The template is private work by members of the University of Stuttgart.
@@ -57,7 +57,7 @@ scons -c
 
 ### PDFL<sup>A</sup>T<sub>E</sub>X
 
-Of course, you can also compile the example application in the
+Of course, you can also compile the example presentation in the
 traditional way using
 ```
 cd tex
