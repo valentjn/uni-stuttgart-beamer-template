@@ -279,15 +279,15 @@
 
 % ------------------------------------------------------------------------------
 % dotted lines with round dots
-% use with \draw[->,dots,line width=1mm,anthrazit,>=stealth] (node1) to (node2);
+% use with \draw[->,dots] (node1) to (node2);
 % (from LaTeX Stack Exchange: https://tex.stackexchange.com/a/101263,
 % by Jake: https://tex.stackexchange.com/users/2552/jake,
 % licensed under CC BY-SA: https://creativecommons.org/licenses/by-sa/3.0/)
 \tikzset{
     dot diameter/.store in=\dot@diameter,
-    dot diameter=3pt,
+    dot diameter=0.8mm,
     dot spacing/.store in=\dot@spacing,
-    dot spacing=5pt,
+    dot spacing=1.4mm,
     dots/.style={
         line width=\dot@diameter,
         line cap=round,
@@ -297,7 +297,8 @@
 
 % ------------------------------------------------------------------------------
 % default arrow/line style
-\tikzset{stuttgart/.style={line width=0.5mm,anthrazit,>=stealth}}
+\usetikzlibrary{arrows.meta}
+\tikzset{stuttgart/.style={line width=0.5mm,anthrazit,>={Stealth[width=2mm,length=2mm]}}}
 
 % ------------------------------------------------------------------------------
 % raise numbers in enumerate items a bit
