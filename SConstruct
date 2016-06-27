@@ -28,12 +28,12 @@ conf = Configure(env)
 
 # check for pdfnup
 if conf.CheckProg("pdfnup"):
-  nup_installed = True
+  is_nup_installed = True
 else:
   print_stderr("Couldn't find pdfnup on your system.",
                "The handout will not be compressed with",
                "multiple slides per sheet.")
-  nup_installed = False
+  is_nup_installed = False
 
 env = conf.Finish()
 
@@ -49,7 +49,7 @@ env.Depends(talk, "tex/beamerthemeStuttgart.sty")
 # handout generation (talk.tex -> handout.tex -> handout.pdf)
 env.Command("tex/handout.tex", "tex/talk.tex", make_handout_command)
 handout = env.PDF("tex/handout.tex")
-if nup_installed:
+if is_nup_installed:
   env.AddPostAction(handout, pdfnup_action)
 env.Depends(handout, talk)
 
