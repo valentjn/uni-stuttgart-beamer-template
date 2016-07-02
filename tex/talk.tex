@@ -12,6 +12,10 @@
 % - navigationDotsLocation: specify location of the dots in the headline
 %   - near: display the dots near the section names (default)
 %   - below: display the dots below the section names
+% - titlePageSpacing: vertical spacing between items on title page (default: 1.5em)
+% - titlePageNumberOfAuthors: influence size and location of authors on title page
+%   - few (default): use larger font size, display authors on the left
+%   - many: use smaller font size, display authors on the right
 % - titlePageInstituteLogo: location of institute logo file on the title page
 %   (default: ../gfx/logos/logo_ipvs)
 % - titlePageDepartmentLogo: location of department logo file on the title page
@@ -29,6 +33,8 @@
 \usetheme[
     thanksPageBigGraphics=../gfx/thanks,
     %navigationDotsLocation=below,
+    %titlePageSpacing=0.6em,
+    %titlePageNumberOfAuthors=many,
 ]{Stuttgart}
 
 % metadata

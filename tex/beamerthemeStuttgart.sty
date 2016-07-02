@@ -1,6 +1,8 @@
 % ------------------------------------------------------------------------------
 % processing of options
 \RequirePackage{kvoptions}
+\RequirePackage{etoolbox}
+
 \SetupKeyvalOptions{
     prefix=stuttgart@
 }
@@ -11,6 +13,13 @@
 
 % titlePageMarginAboveTitle=2em (e.g.) moves the title/subtitle/date on the title page down by 2em
 %\DeclareStringOption[0em]{titlePageMarginAboveTitle}
+
+% vertical spacing between title, subtitle, date, institute on title page
+\DeclareStringOption[1.5em]{titlePageSpacing}
+
+% titlePageNumberOfAuthors=few displays the authors in a larger font
+% titlePageNumberOfAuthors=many displays the authors in a smaller font and somewhere else
+\DeclareStringOption[few]{titlePageNumberOfAuthors}
 
 % graphics on the title page
 \DeclareStringOption[../gfx/logos/logo_ipvs]{titlePageInstituteLogo}
@@ -69,10 +78,17 @@
 \setbeamercolor{title}{fg=white}
 % author on title page
 \setbeamercolor{author}{fg=anthrazit}
-\setbeamerfont{author}{series=\usebeamerfont{subtitle}}
+\setbeamerfont{author}{series=\bfseries}
+\expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{many}{%
+    \setbeamerfont{author}{size=\small}
+}{}
 % date on title page
 \setbeamercolor{date}{fg=white}
 \setbeamerfont{date}{size=\usebeamerfont{subtitle}}
+
+% ------------------------------------------------------------------------------
+% no 1em spacing between "\institute"s on title page when separated with \and
+\renewcommand*{\beamer@andinst}{\\}
 
 % ------------------------------------------------------------------------------
 % Helvetica as standard font (no Univers/Arial in TeXLive)
@@ -107,9 +123,15 @@
     \begin{textblock}{128}(40,20)
         \tikz\draw[anthrazit,fill=anthrazit] (0,0) circle (50mm);
     \end{textblock}
-    \begin{textblock}{128}(40,17)
-        \tikz\draw[white,fill=white] (0,0) circle (12mm);
-    \end{textblock}
+    \expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{few}{%
+        \begin{textblock}{128}(40,17)
+            \tikz\draw[white,fill=white] (0,0) circle (12mm);
+        \end{textblock}%
+    }{%
+        \begin{textblock}{128}(80,4)
+            \tikz\draw[white,fill=white] (0,0) circle (16mm);
+        \end{textblock}%
+    }
     \begin{textblock}{128}(10,45)
         \tikz\draw[white,fill=white] (0,0) circle (10mm);
     \end{textblock}
@@ -124,18 +146,31 @@
         \parbox[c][45mm]{70mm}{%
             \raggedright%
             {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
-            \vspace{1.5em}%
+            \vspace{\stuttgart@titlePageSpacing}%
             {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
-            \vspace{1.5em}%
+            \vspace{\stuttgart@titlePageSpacing}%
             {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+            \expandafter\ifstrequal\expandafter{\insertinstitute}{}{}{%
+                \vspace{\stuttgart@titlePageSpacing}%
+            }%
+            {\usebeamerfont{institute}\usebeamercolor[fg]{date}\insertinstitute\par}%
         }
     \end{textblock}
-    \begin{textblock}{19}(45,17)
-        \parbox[c][24mm]{19mm}{%
-            \raggedright%
-            {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
-        }
-    \end{textblock}
+    \expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{few}{%
+        \begin{textblock}{19}(45,17)
+            \parbox[c][24mm]{19mm}{%
+                \raggedright%
+                {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+            }
+        \end{textblock}%
+    }{%
+        \begin{textblock}{25}(84,4)
+            \parbox[c][32mm]{25mm}{%
+                \raggedright%
+                {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+            }
+        \end{textblock}%
+    }
     \begin{textblock}{20}(10,45)
         \parbox[c][20mm]{20mm}{%
             \centering\includegraphics[width=10mm]{\stuttgart@titlePageInstituteLogo}%
@@ -191,7 +226,6 @@
 % (from LaTeX Stack Exchange: https://tex.stackexchange.com/a/88403,
 % by diabonas: https://tex.stackexchange.com/users/3323/diabonas,
 % licensed under CC BY-SA: https://creativecommons.org/licenses/by-sa/3.0/)
-\RequirePackage{etoolbox}
 \expandafter\ifstrequal\expandafter{\stuttgart@navigationDotsLocation}{near}{
     \patchcmd{\slideentry}{\advance\beamer@tempdim by -.05cm}{\advance\beamer@tempdim by\beamer@vboxoffset\advance\beamer@tempdim by\beamer@boxsize\advance\beamer@tempdim by 1.2\pgflinewidth}{}{}
     \patchcmd{\slideentry}{\kern\beamer@tempdim}{\advance\beamer@tempdim by 2pt\advance\beamer@tempdim by\wd\beamer@sectionbox\kern\beamer@tempdim}{}{}
