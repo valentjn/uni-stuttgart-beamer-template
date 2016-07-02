@@ -146,9 +146,13 @@
         \parbox[c][45mm]{70mm}{%
             \raggedright%
             {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
-            \vspace{\stuttgart@titlePageSpacing}%
+            \expandafter\ifstrequal\expandafter{\insertsubtitle}{}{}{%
+                \vspace{\stuttgart@titlePageSpacing}%
+            }%
             {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
-            \vspace{\stuttgart@titlePageSpacing}%
+            \expandafter\ifstrequal\expandafter{\insertdate}{}{}{%
+                \vspace{\stuttgart@titlePageSpacing}%
+            }%
             {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
             \expandafter\ifstrequal\expandafter{\insertinstitute}{}{}{%
                 \vspace{\stuttgart@titlePageSpacing}%
