@@ -22,6 +22,7 @@
 \DeclareStringOption[few]{titlePageNumberOfAuthors}
 
 % graphics on the title page
+\DeclareStringOption[../gfx/logos/logo_uni_stuttgart_white]{titlePageUniversityLogo}
 \DeclareStringOption[../gfx/logos/logo_ipvs]{titlePageInstituteLogo}
 \DeclareStringOption[../gfx/logos/logo_sgs]{titlePageDepartmentLogo}
 \DeclareStringOption[../gfx/logos/logo_simtech]{titlePageBigLogo}
@@ -118,7 +119,7 @@
         (0,0) rectangle (\paperwidth,\paperheight);
     \end{textblock}
     \begin{textblock}{128}(5,5)
-        \includegraphics[height=9mm]{../gfx/logos/logo_uni_stuttgart_white}
+        \includegraphics[height=9mm]{\stuttgart@titlePageUniversityLogo}
     \end{textblock}
     \begin{textblock}{128}(40,20)
         \tikz\draw[anthrazit,fill=anthrazit] (0,0) circle (50mm);
