@@ -22,7 +22,6 @@
 \DeclareStringOption[few]{titlePageNumberOfAuthors}
 
 % graphics on the title page
-\DeclareStringOption[../gfx/logos/logo_uni_stuttgart_white]{titlePageUniversityLogo}
 \DeclareStringOption[../gfx/logos/logo_ipvs]{titlePageInstituteLogo}
 \DeclareStringOption[../gfx/logos/logo_sgs]{titlePageDepartmentLogo}
 \DeclareStringOption[../gfx/logos/logo_simtech]{titlePageBigLogo}
@@ -105,7 +104,7 @@
 
 % ------------------------------------------------------------------------------
 % make covered text transparent
-\setbeamercovered{transparent}
+\setbeamercovered{transparent=8}
 
 % ------------------------------------------------------------------------------
 % title page
@@ -119,7 +118,7 @@
         (0,0) rectangle (\paperwidth,\paperheight);
     \end{textblock}
     \begin{textblock}{128}(5,5)
-        \includegraphics[height=9mm]{\stuttgart@titlePageUniversityLogo}
+        \includegraphics[height=9mm]{../gfx/logos/logo_uni_stuttgart_white}
     \end{textblock}
     \begin{textblock}{128}(40,20)
         \tikz\draw[anthrazit,fill=anthrazit] (0,0) circle (50mm);
@@ -315,6 +314,8 @@
 \newcommand*{\follows}{\ensuremath{\rightsquigarrow}\xspace}
 % bold vectors
 \renewcommand*{\vec}[1]{\boldsymbol{#1}}
+% bold matrices
+\newcommand*{\mat}[1]{\boldsymbol{#1}}
 
 % ------------------------------------------------------------------------------
 % dotted lines with round dots
