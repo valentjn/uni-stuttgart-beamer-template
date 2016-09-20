@@ -21,6 +21,9 @@
 % titlePageNumberOfAuthors=many displays the authors in a smaller font and somewhere else
 \DeclareStringOption[few]{titlePageNumberOfAuthors}
 
+% scale argument for the big graphics on the thanks page
+\DeclareStringOption[1]{thanksPageBigGraphicsScale}
+
 % graphics on the title page
 \DeclareStringOption[../gfx/logos/logo_ipvs]{titlePageInstituteLogo}
 \DeclareStringOption[../gfx/logos/logo_sgs]{titlePageDepartmentLogo}
@@ -408,7 +411,8 @@
     \end{textblock}
     \begin{textblock}{76}(45,15)
         \parbox[c][76mm]{76mm}{%
-            \centering\includegraphics{\stuttgart@thanksPageBigGraphics}%
+            \centering\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{%
+                \stuttgart@thanksPageBigGraphics}%
         }
     \end{textblock}
     \begin{textblock}{32}(5,25)
