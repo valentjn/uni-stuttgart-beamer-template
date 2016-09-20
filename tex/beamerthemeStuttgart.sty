@@ -265,6 +265,30 @@
 \setbeamersize{mini frame radius=0.9mm,mini frame size=2mm}
 
 % ------------------------------------------------------------------------------
+% don't use full \paperwidth for navigation dots (asymmetric left/right spacing)
+% (originally from beamerouterthememiniframes.sty,
+% licensed under the LaTeX Project Public License and/or under the GNU Public License,
+% see doc/licenses/LICENSE in the Beamer package)
+\defbeamertemplate*{headline}{myminiframes theme}
+{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+        \vskip2pt\insertnavigation{0.984\paperwidth}\vskip2pt
+    \end{beamercolorbox}%
+    \ifbeamer@theme@subsection%
+    \begin{beamercolorbox}[colsep=1.5pt]{middle separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+        leftskip=.3cm,rightskip=.3cm plus1fil]{subsection in head/foot}
+        \usebeamerfont{subsection in head/foot}\insertsubsectionhead
+    \end{beamercolorbox}%
+    \fi%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+
+% ------------------------------------------------------------------------------
 % add progress bar
 % (adapted from LaTeX Stack Exchange: https://tex.stackexchange.com/a/59749,
 % by Gonzalo Medina: https://tex.stackexchange.com/users/3954/gonzalo-medina,
