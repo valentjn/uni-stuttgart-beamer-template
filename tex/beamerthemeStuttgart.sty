@@ -311,6 +311,31 @@
 % navigation dots: "radius" (= size) and "size" (= space between)
 \setbeamersize{mini frame radius=0.9mm,mini frame size=2mm}
 
+% -------------------------------------------------------------------------
+% define footline to contain authors and slide number
+% (adapted from LaTeX Stack Exchange: https://tex.stackexchange.com/a/100838
+% by Claudio Fiandrino: http://tex.stackexchange.com/users/13304/claudio-fiandrino,
+% licensed under CC BY-SA: https://creativecommons.org/licenses/by-sa/3.0/)
+\newcommand{\frameofframes}{/}
+\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
+
+\setframeofframes{/}
+\setbeamertemplate{footline}
+{%
+  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+    leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    {\usebeamerfont{title in head/foot}\insertshorttitle}%
+    \hfill%
+    \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+    \hfill%
+    {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+  \end{beamercolorbox}
+}
+
 % ------------------------------------------------------------------------------
 % don't use full \paperwidth for navigation dots (asymmetric left/right spacing)
 % (originally from beamerouterthememiniframes.sty,
