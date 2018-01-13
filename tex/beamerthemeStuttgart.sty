@@ -331,7 +331,11 @@
     \hfill%
     \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
     \hfill%
-    {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
+    {%
+      \usebeamerfont{frame number}\usebeamercolor[fg]{frame number}%
+      \hphantom{\inserttotalframenumber}\llap{\insertframenumber}~%
+      \frameofframes~\inserttotalframenumber%
+    }
   \end{beamercolorbox}%
   \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
   \end{beamercolorbox}
