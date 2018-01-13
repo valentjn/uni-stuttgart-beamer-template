@@ -58,4 +58,5 @@ env.Clean(talk, "config.log")
 for filename in sorted(os.listdir("tex")):
   if filename.endswith(".tex"):
     env.Clean(talk, ["tex/{}.{}".format(filename[:-4], extension)
-                     for extension in ["aux", "nav", "out", "run.xml", "snm"]])
+                     for extension in ["aux", "bbl", "blg", "nav",
+                                       "out", "run.xml", "snm"]])
