@@ -242,8 +242,26 @@
         }
     \end{textblock}
 }
+
+% ------------------------------------------------------------------------------
+% Fix for hiding pages from the nav bar
+% (from LaTeX Stack Exchange: https://tex.stackexchange.com/a/45038,
+% by diabonas: https://tex.stackexchange.com/users/3323/diabonas,
+% licensed under CC BY-SA: https://creativecommons.org/licenses/by-sa/3.0/)
+\let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry
+\def\beamer@writeslidentry@miniframesoff{%
+	\expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}% does not happen normally
+	{%else
+		% removed \addtocontents commands
+		\clearpage\beamer@notesactions%
+	}
+}
+\newcommand*{\miniframeson}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframeson}
+\newcommand*{\miniframesoff}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframesoff}
+
 \newcommand*{\titleframe}{%
     \section*{}
+	\miniframesoff
     {%
         \setbeamertemplate{headline}{}
         \setbeamertemplate{footline}{}
@@ -251,12 +269,14 @@
             \titlepage
         \end{frame}
     }%
+	\miniframeson
 }
 
 % ------------------------------------------------------------------------------
 % section page
 \newcommand*{\sectionframe}[1]{
     \section*{}
+	\miniframesoff
     {%
         \setbeamertemplate{headline}{}
         \setbeamertemplate{footline}{}
@@ -274,6 +294,7 @@
             \end{textblock}
         \end{frame}
     }%
+	\miniframeson
 }
 
 % ------------------------------------------------------------------------------
@@ -534,6 +555,7 @@
 }
 \newcommand*{\thanksframe}{%
     \section*{}%
+	\miniframesoff
     {%
         \setbeamertemplate{headline}{}
         \setbeamertemplate{footline}{}
@@ -541,6 +563,7 @@
             \usebeamertemplate*{thanks page}
         \end{frame}
     }%
+	\miniframeson
 }
 
 % ------------------------------------------------------------------------------
