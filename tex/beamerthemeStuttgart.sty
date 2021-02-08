@@ -518,7 +518,11 @@
         Thank you for your attention!\usebeamercolor[fg]{normal text}
     \end{textblock}
     \begin{textblock}{128}(45,15)
-        \tikz\draw[white,fill=white] (0,0) circle (38mm);
+		\begin{tikzpicture}
+	        \draw[white,fill=white] (0,0) circle (38mm);
+			\clip (0,0) circle (37.5mm);
+			\node[inner sep=0pt, outer sep=0pt] at (0,0) {\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{\stuttgart@thanksPageBigGraphics}};
+		\end{tikzpicture}
     \end{textblock}
     \begin{textblock}{128}(5,25)
         \tikz\draw[white,fill=white] (0,0) circle (16mm);
@@ -528,12 +532,6 @@
     \end{textblock}
     \begin{textblock}{128}(15,50)
         \tikz\draw[white,fill=white] (0,0) circle (20mm);
-    \end{textblock}
-    \begin{textblock}{76}(45,15)
-        \parbox[c][76mm]{76mm}{%
-            \centering\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{%
-                \stuttgart@thanksPageBigGraphics}%
-        }
     \end{textblock}
     \begin{textblock}{32}(5,25)
         \parbox[c][32mm]{32mm}{%
