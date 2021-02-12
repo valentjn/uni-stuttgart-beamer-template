@@ -242,8 +242,25 @@
         }
     \end{textblock}
 }
+
+% ------------------------------------------------------------------------------
+% Fix for hiding pages from the nav bar
+% (from LaTeX Stack Exchange: https://tex.stackexchange.com/a/45038,
+% by diabonas: https://tex.stackexchange.com/users/3323/diabonas,
+% licensed under CC BY-SA: https://creativecommons.org/licenses/by-sa/3.0/)
+\let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry
+\def\beamer@writeslidentry@miniframesoff{%
+    \expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}% does not happen normally
+    {%else
+        % removed \addtocontents commands
+        \clearpage\beamer@notesactions%
+    }
+}
+\newcommand*{\miniframeson}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframeson}
+\newcommand*{\miniframesoff}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframesoff}
+
 \newcommand*{\titleframe}{%
-    \section*{}
+    \miniframesoff
     {%
         \setbeamertemplate{headline}{}
         \setbeamertemplate{footline}{}
@@ -251,12 +268,13 @@
             \titlepage
         \end{frame}
     }%
+    \miniframeson
 }
 
 % ------------------------------------------------------------------------------
 % section page
 \newcommand*{\sectionframe}[1]{
-    \section*{}
+    \miniframesoff
     {%
         \setbeamertemplate{headline}{}
         \setbeamertemplate{footline}{}
@@ -274,6 +292,7 @@
             \end{textblock}
         \end{frame}
     }%
+    \miniframeson
 }
 
 % ------------------------------------------------------------------------------
@@ -499,7 +518,11 @@
         Thank you for your attention!\usebeamercolor[fg]{normal text}
     \end{textblock}
     \begin{textblock}{128}(45,15)
-        \tikz\draw[white,fill=white] (0,0) circle (38mm);
+        \begin{tikzpicture}
+            \draw[white,fill=white] (0,0) circle (38mm);
+            \clip (0,0) circle (37.5mm);
+            \node[inner sep=0pt, outer sep=0pt] at (0,0) {\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{\stuttgart@thanksPageBigGraphics}};
+        \end{tikzpicture}
     \end{textblock}
     \begin{textblock}{128}(5,25)
         \tikz\draw[white,fill=white] (0,0) circle (16mm);
@@ -509,12 +532,6 @@
     \end{textblock}
     \begin{textblock}{128}(15,50)
         \tikz\draw[white,fill=white] (0,0) circle (20mm);
-    \end{textblock}
-    \begin{textblock}{76}(45,15)
-        \parbox[c][76mm]{76mm}{%
-            \centering\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{%
-                \stuttgart@thanksPageBigGraphics}%
-        }
     \end{textblock}
     \begin{textblock}{32}(5,25)
         \parbox[c][32mm]{32mm}{%
@@ -533,7 +550,7 @@
     \end{textblock}
 }
 \newcommand*{\thanksframe}{%
-    \section*{}%
+    \miniframesoff
     {%
         \setbeamertemplate{headline}{}
         \setbeamertemplate{footline}{}
@@ -541,6 +558,7 @@
             \usebeamertemplate*{thanks page}
         \end{frame}
     }%
+    \miniframeson
 }
 
 % ------------------------------------------------------------------------------
