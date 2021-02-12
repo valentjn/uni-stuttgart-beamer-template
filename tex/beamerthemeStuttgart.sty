@@ -250,17 +250,17 @@
 % licensed under CC BY-SA: https://creativecommons.org/licenses/by-sa/3.0/)
 \let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry
 \def\beamer@writeslidentry@miniframesoff{%
-	\expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}% does not happen normally
-	{%else
-		% removed \addtocontents commands
-		\clearpage\beamer@notesactions%
-	}
+    \expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}% does not happen normally
+    {%else
+        % removed \addtocontents commands
+        \clearpage\beamer@notesactions%
+    }
 }
 \newcommand*{\miniframeson}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframeson}
 \newcommand*{\miniframesoff}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframesoff}
 
 \newcommand*{\titleframe}{%
-	\miniframesoff
+    \miniframesoff
     {%
         \setbeamertemplate{headline}{}
         \setbeamertemplate{footline}{}
@@ -268,7 +268,7 @@
             \titlepage
         \end{frame}
     }%
-	\miniframeson
+    \miniframeson
 }
 
 % ------------------------------------------------------------------------------
@@ -518,11 +518,11 @@
         Thank you for your attention!\usebeamercolor[fg]{normal text}
     \end{textblock}
     \begin{textblock}{128}(45,15)
-		\begin{tikzpicture}
-	        \draw[white,fill=white] (0,0) circle (38mm);
-			\clip (0,0) circle (37.5mm);
-			\node[inner sep=0pt, outer sep=0pt] at (0,0) {\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{\stuttgart@thanksPageBigGraphics}};
-		\end{tikzpicture}
+        \begin{tikzpicture}
+            \draw[white,fill=white] (0,0) circle (38mm);
+            \clip (0,0) circle (37.5mm);
+            \node[inner sep=0pt, outer sep=0pt] at (0,0) {\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{\stuttgart@thanksPageBigGraphics}};
+        \end{tikzpicture}
     \end{textblock}
     \begin{textblock}{128}(5,25)
         \tikz\draw[white,fill=white] (0,0) circle (16mm);
@@ -550,7 +550,7 @@
     \end{textblock}
 }
 \newcommand*{\thanksframe}{%
-	\miniframesoff
+    \miniframesoff
     {%
         \setbeamertemplate{headline}{}
         \setbeamertemplate{footline}{}
@@ -558,7 +558,7 @@
             \usebeamertemplate*{thanks page}
         \end{frame}
     }%
-	\miniframeson
+    \miniframeson
 }
 
 % ------------------------------------------------------------------------------
