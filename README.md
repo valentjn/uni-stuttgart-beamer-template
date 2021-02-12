@@ -24,9 +24,10 @@ The directory `tex` contains L<sup>A</sup>T<sub>E</sub>X source code
 and resulting PDFs, while `gfx` contains graphics.
 The main component of the template is the new Beamer theme "Stuttgart",
 located in `tex/beamerthemeStuttgart.sty`.
-Also included is an example presentation in `tex/talk.pdf`
-(L<sup>A</sup>T<sub>E</sub>X source in
-`tex/talk.tex` and `tex/slides.tex`).
+Also included is an example presentation in
+`tex/talk.tex` and `tex/slides.tex`.
+See how it looks by downloading the PDFs in the latest
+[release on GitHub](https://github.com/valentjn/uni-stuttgart-beamer-template/releases/latest).
 
 ### SCons
 
