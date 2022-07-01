@@ -161,72 +161,97 @@
 % title page
 \RequirePackage{tikz}
 \RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{graphicx}
 \RequirePackage{varwidth}
+\RequirePackage{xfp}
+\RequirePackage{calc}
+
+% Helper macro to convert a given length/dimension into a numeric value (without unit) optionally
+% converting into the desired unit first. If no unit is given, the returned number is meant in pt.
+% https://tex.stackexchange.com/a/541869
+% Example: \@dimToNum[cm]{\textwidth}
+\NewExpandableDocumentCommand{\@dimToNum}{O{pt}m}{%
+  % #1 (optional, default pt), #2 = length
+  \fpeval{(#2)/(1#1)}%
+}
 
 \setlength{\TPHorizModule}{1mm}
 \setlength{\TPVertModule}{1mm}
+
+\newcommand{\@pageWidthMM}{\@dimToNum[mm]{\paperwidth}}
+\newcommand{\@pageHeightMM}{\@dimToNum[mm]{\paperheight}}
 
 \defbeamertemplate*{title page}{customized}[1][]{
     \begin{textblock}{128}(0,0)
         \tikz\shade[shading=axis,bottom color=mittelblau,top color=hellblau,shading angle=-45] 
         (0,0) rectangle (\paperwidth,\paperheight);
     \end{textblock}
+
     \begin{textblock}{128}(5,5)
-        \includegraphics[height=9mm]{\stuttgart@titlePageUniversityLogo}
+        % Adjust the size of the logo based on the general frame size (within reasonable bounds)
+        \edef\@pageWidthCM{\@dimToNum[cm]{\paperwidth}}
+        \edef\@logoWidth{\fpeval{min(0.5 * \@pageWidthCM, max(4, 0.4 * \@pageWidthCM))}cm}
+        \includegraphics[width=\@logoWidth]{\stuttgart@titlePageUniversityLogo}
     \end{textblock}
-    \begin{textblock}{128}(40,20)
-        \tikz\draw[anthrazit,fill=anthrazit] (0,0) circle (50mm);
+
+    \edef\@titleCircleRadius{50}
+    \edef\@titleCircleX{\fpeval{\@pageWidthMM - 1.7*\@titleCircleRadius}}
+    \edef\@titleCircleY{\fpeval{\@pageHeightMM - 1.5*\@titleCircleRadius}}
+
+    \begin{textblock}{128}(\@titleCircleX,\@titleCircleY)
+        \tikz\draw[anthrazit,fill=anthrazit] (0,0) circle ({\@titleCircleRadius mm});
     \end{textblock}
+
     % Draw the circle the author(s) is/are placed onto
     \expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{few}{%
-        \begin{textblock}{128}(40,17)
+        \begin{textblock}{128}(\@titleCircleX,\fpeval{\@titleCircleY - 3})
             \tikz\draw[white,fill=white] (0,0) circle (12mm);
         \end{textblock}%
     }{%
-        \begin{textblock}{128}(80,4)
+        \begin{textblock}{128}(\fpeval{\@titleCircleX + 40},\fpeval{\@titleCircleY - 14})
             \tikz\draw[white,fill=white] (0,0) circle (16mm);
         \end{textblock}%
     }
 
     \ifdefempty{\stuttgart@titlePageInstituteLogo}{}{%
-        \begin{textblock}{128}(10,45)
+            \begin{textblock}{128}(\fpeval{\@titleCircleX - 30},\fpeval{\@titleCircleY + 25})
             \tikz\draw[white,fill=white] (0,0) circle (10mm);
         \end{textblock}
     }
     \ifdefempty{\stuttgart@titlePageDepartmentLogo}{}{%
-        \begin{textblock}{128}(25,50)
+        \begin{textblock}{128}(\fpeval{\@titleCircleX - 15},\fpeval{\@titleCircleY + 30})
             \tikz\draw[white,fill=white] (0,0) circle (10mm);
         \end{textblock}
     }
     \ifdefempty{\stuttgart@titlePageBigLogo}{}{%
-        \begin{textblock}{128}(15,60)
+        \begin{textblock}{128}(\fpeval{\@titleCircleX - 25},\fpeval{\@titleCircleY + 40})
             \tikz\draw[white,fill=white] (0,0) circle (15mm);
         \end{textblock}
     }
 
     \ifdefempty{\stuttgart@titlePageInstituteLogo}{}{%
-        \begin{textblock}{20}(10,45)
+        \begin{textblock}{20}(\fpeval{\@titleCircleX - 30},\fpeval{\@titleCircleY + 25})
             \parbox[c][20mm]{20mm}{%
                 \centering\includegraphics[width=10mm]{\stuttgart@titlePageInstituteLogo}%
             }
         \end{textblock}
     }
     \ifdefempty{\stuttgart@titlePageDepartmentLogo}{}{%
-        \begin{textblock}{20}(25,50)
+        \begin{textblock}{20}(\fpeval{\@titleCircleX - 15},\fpeval{\@titleCircleY + 30})
             \parbox[c][20mm]{20mm}{%
                 \centering\includegraphics[width=10mm]{\stuttgart@titlePageDepartmentLogo}%
             }
         \end{textblock}
     }
     \ifdefempty{\stuttgart@titlePageBigLogo}{}{%
-        \begin{textblock}{30}(15,60)
+        \begin{textblock}{30}(\fpeval{\@titleCircleX - 25},\fpeval{\@titleCircleY + 40})
             \parbox[c][30mm]{30mm}{%
                 \centering\includegraphics[width=26mm]{\stuttgart@titlePageBigLogo}%
             }
         \end{textblock}
     }
 
-    \begin{textblock}{70}(55,45)
+    \begin{textblock}{70}(\fpeval{\@titleCircleX + 15},\fpeval{\@titleCircleY + 25})
         %\vspace{\stuttgart@titlePageMarginAboveTitle}
         \parbox[c][45mm]{70mm}{%
             \raggedright%
@@ -248,7 +273,7 @@
 
     % Print the author(s) such that the name(s) is/are centered in the respective circle drawn before
     \expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{few}{%
-        \begin{textblock}{24}(40,17)
+        \begin{textblock}{24}(\@titleCircleX,\fpeval{\@titleCircleY - 3})
             \parbox[c][24mm]{24mm}{%
                 \centering%
                 \begin{varwidth}{24mm}%
@@ -258,7 +283,7 @@
             }
         \end{textblock}%
     }{%
-        \begin{textblock}{25}(82,4)
+        \begin{textblock}{25}(\fpeval{\@titleCircleX + 42},\fpeval{\@titleCircleY - 14})
             % Since we expect to have to write multiple author names below each other, use a little
             % offset to the left as to not start directly at the circle's border
             \parbox[c][32mm]{30mm}{%
