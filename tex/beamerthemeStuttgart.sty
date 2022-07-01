@@ -161,8 +161,11 @@
 % title page
 \RequirePackage{tikz}
 \RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{varwidth}
+
 \setlength{\TPHorizModule}{1mm}
 \setlength{\TPVertModule}{1mm}
+
 \defbeamertemplate*{title page}{customized}[1][]{
     \begin{textblock}{128}(0,0)
         \tikz\shade[shading=axis,bottom color=mittelblau,top color=hellblau,shading angle=-45] 
@@ -174,6 +177,7 @@
     \begin{textblock}{128}(40,20)
         \tikz\draw[anthrazit,fill=anthrazit] (0,0) circle (50mm);
     \end{textblock}
+    % Draw the circle the author(s) is/are placed onto
     \expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{few}{%
         \begin{textblock}{128}(40,17)
             \tikz\draw[white,fill=white] (0,0) circle (12mm);
@@ -241,18 +245,28 @@
             {\usebeamerfont{institute}\usebeamercolor[fg]{date}\insertinstitute\par}%
         }
     \end{textblock}
+
+    % Print the author(s) such that the name(s) is/are centered in the respective circle drawn before
     \expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{few}{%
-        \begin{textblock}{19}(45,17)
-            \parbox[c][24mm]{19mm}{%
-                \raggedright%
-                {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+        \begin{textblock}{24}(40,17)
+            \parbox[c][24mm]{24mm}{%
+                \centering%
+                \begin{varwidth}{24mm}%
+                    \leavevmode%
+                    {\raggedright\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}%
+                \end{varwidth}%
             }
         \end{textblock}%
     }{%
-        \begin{textblock}{25}(84,4)
-            \parbox[c][32mm]{25mm}{%
-                \raggedright%
-                {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+        \begin{textblock}{25}(82,4)
+            % Since we expect to have to write multiple author names below each other, use a little
+            % offset to the left as to not start directly at the circle's border
+            \parbox[c][32mm]{30mm}{%
+                \centering%
+                \begin{varwidth}{30mm}%
+                    \leavevmode%
+                    {\raggedright\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}%
+                \end{varwidth}%
             }
         \end{textblock}%
     }
