@@ -178,6 +178,10 @@
 \setlength{\TPHorizModule}{1mm}
 \setlength{\TPVertModule}{1mm}
 
+
+\newlength{\@beamer@stuttgart@helperLengthA}
+\newlength{\@beamer@stuttgart@helperLengthB}
+
 \newcommand{\@pageWidthMM}{\@dimToNum[mm]{\paperwidth}}
 \newcommand{\@pageHeightMM}{\@dimToNum[mm]{\paperheight}}
 
@@ -406,11 +410,23 @@
 {%
   \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
   \end{beamercolorbox}
+
   \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
     leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
-    {\usebeamerfont{title in head/foot}\insertshorttitle}%
-    \hfill%
-    \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+    \edef\@availableSpace{\fpeval{\@pageWidthMM - 6}}
+    \def\@shortTitle{\usebeamerfont{title in head/foot}\insertshorttitle}
+    \def\@shortAuthor{\usebeamerfont{author in head/foot}\insertshortauthor}
+    \settowidth{\@beamer@stuttgart@helperLengthA}{\@shortTitle}
+    \settowidth{\@beamer@stuttgart@helperLengthB}{\@shortAuthor}
+    \edef\@titleWidth{\@dimToNum[mm]{\@beamer@stuttgart@helperLengthA}}
+    \edef\@authorWidth{\@dimToNum[mm]{\@beamer@stuttgart@helperLengthB}}
+    % Calculate the spacing between title and author such that the author name will end
+    % up in the dead center of the footer (if possible)
+    \edef\@titleAuthorSpacing{\fpeval{max(4, \@availableSpace / 2 - \@titleWidth - \@authorWidth / 2)}}
+
+    \@shortTitle%
+    \hspace{\@titleAuthorSpacing mm}%
+    \leavevmode{\@shortAuthor}%
     \hfill%
     {%
       \usebeamerfont{frame number}\usebeamercolor[fg]{frame number}%
