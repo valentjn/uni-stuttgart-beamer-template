@@ -73,15 +73,15 @@
 
 % graphics on the title page
 \DeclareStringOption[../gfx/logos/logo_us_white]{titlePageUniversityLogo}
-\DeclareStringOption[../gfx/logos/logo_ipvs]{titlePageInstituteLogo}
-\DeclareStringOption[../gfx/logos/logo_sgs]{titlePageDepartmentLogo}
-\DeclareStringOption[../gfx/logos/logo_simtech]{titlePageBigLogo}
+\DeclareStringOption{titlePageInstituteLogo}
+\DeclareStringOption{titlePageDepartmentLogo}
+\DeclareStringOption{titlePageBigLogo}
 
 % graphics on the thanks page
 \DeclareStringOption[../gfx/tikz/gfx_title]{thanksPageBigGraphics}
-\DeclareStringOption[../gfx/logos/logo_ipvs]{thanksPageInstituteLogo}
-\DeclareStringOption[../gfx/logos/logo_sgs]{thanksPageDepartmentLogo}
-\DeclareStringOption[../gfx/logos/logo_simtech]{thanksPageBigLogo}
+\DeclareStringOption{thanksPageInstituteLogo}
+\DeclareStringOption{thanksPageDepartmentLogo}
+\DeclareStringOption{thanksPageBigLogo}
 
 % process the options!
 \ProcessLocalKeyvalOptions*
@@ -183,15 +183,45 @@
             \tikz\draw[white,fill=white] (0,0) circle (16mm);
         \end{textblock}%
     }
-    \begin{textblock}{128}(10,45)
-        \tikz\draw[white,fill=white] (0,0) circle (10mm);
-    \end{textblock}
-    \begin{textblock}{128}(25,50)
-        \tikz\draw[white,fill=white] (0,0) circle (10mm);
-    \end{textblock}
-    \begin{textblock}{128}(15,60)
-        \tikz\draw[white,fill=white] (0,0) circle (15mm);
-    \end{textblock}
+
+    \ifdefempty{\stuttgart@titlePageInstituteLogo}{}{%
+        \begin{textblock}{128}(10,45)
+            \tikz\draw[white,fill=white] (0,0) circle (10mm);
+        \end{textblock}
+    }
+    \ifdefempty{\stuttgart@titlePageDepartmentLogo}{}{%
+        \begin{textblock}{128}(25,50)
+            \tikz\draw[white,fill=white] (0,0) circle (10mm);
+        \end{textblock}
+    }
+    \ifdefempty{\stuttgart@titlePageBigLogo}{}{%
+        \begin{textblock}{128}(15,60)
+            \tikz\draw[white,fill=white] (0,0) circle (15mm);
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@titlePageInstituteLogo}{}{%
+        \begin{textblock}{20}(10,45)
+            \parbox[c][20mm]{20mm}{%
+                \centering\includegraphics[width=10mm]{\stuttgart@titlePageInstituteLogo}%
+            }
+        \end{textblock}
+    }
+    \ifdefempty{\stuttgart@titlePageDepartmentLogo}{}{%
+        \begin{textblock}{20}(25,50)
+            \parbox[c][20mm]{20mm}{%
+                \centering\includegraphics[width=10mm]{\stuttgart@titlePageDepartmentLogo}%
+            }
+        \end{textblock}
+    }
+    \ifdefempty{\stuttgart@titlePageBigLogo}{}{%
+        \begin{textblock}{30}(15,60)
+            \parbox[c][30mm]{30mm}{%
+                \centering\includegraphics[width=26mm]{\stuttgart@titlePageBigLogo}%
+            }
+        \end{textblock}
+    }
+
     \begin{textblock}{70}(55,45)
         %\vspace{\stuttgart@titlePageMarginAboveTitle}
         \parbox[c][45mm]{70mm}{%
@@ -226,21 +256,6 @@
             }
         \end{textblock}%
     }
-    \begin{textblock}{20}(10,45)
-        \parbox[c][20mm]{20mm}{%
-            \centering\includegraphics[width=10mm]{\stuttgart@titlePageInstituteLogo}%
-        }
-    \end{textblock}
-    \begin{textblock}{20}(25,50)
-        \parbox[c][20mm]{20mm}{%
-            \centering\includegraphics[width=10mm]{\stuttgart@titlePageDepartmentLogo}%
-        }
-    \end{textblock}
-    \begin{textblock}{30}(15,60)
-        \parbox[c][30mm]{30mm}{%
-            \centering\includegraphics[width=26mm]{\stuttgart@titlePageBigLogo}%
-        }
-    \end{textblock}
 }
 
 % ------------------------------------------------------------------------------
@@ -524,30 +539,48 @@
             \node[inner sep=0pt, outer sep=0pt] at (0,0) {\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{\stuttgart@thanksPageBigGraphics}};
         \end{tikzpicture}
     \end{textblock}
-    \begin{textblock}{128}(5,25)
-        \tikz\draw[white,fill=white] (0,0) circle (16mm);
-    \end{textblock}
-    \begin{textblock}{128}(25,35)
-        \tikz\draw[white,fill=white] (0,0) circle (16mm);
-    \end{textblock}
-    \begin{textblock}{128}(15,50)
-        \tikz\draw[white,fill=white] (0,0) circle (20mm);
-    \end{textblock}
-    \begin{textblock}{32}(5,25)
-        \parbox[c][32mm]{32mm}{%
-            \centering\includegraphics[width=14mm]{\stuttgart@thanksPageInstituteLogo}%
-        }
-    \end{textblock}
-    \begin{textblock}{32}(25,35)
-        \parbox[c][32mm]{32mm}{%
-            \centering\includegraphics[width=14mm]{\stuttgart@thanksPageDepartmentLogo}%
-        }
-    \end{textblock}
-    \begin{textblock}{40}(15,50)
-        \parbox[c][40mm]{40mm}{%
-            \centering\includegraphics[width=34mm]{\stuttgart@thanksPageBigLogo}%
-        }
-    \end{textblock}
+
+    \ifdefempty{\stuttgart@thanksPageInstituteLogo}{}{%
+        \begin{textblock}{128}(5,25)
+            \tikz\draw[white,fill=white] (0,0) circle (16mm);
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageDepartmentLogo}{}{%
+        \begin{textblock}{128}(25,35)
+            \tikz\draw[white,fill=white] (0,0) circle (16mm);
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageBigLogo}{}{%
+        \begin{textblock}{128}(15,50)
+            \tikz\draw[white,fill=white] (0,0) circle (20mm);
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageInstituteLogo}{}{%
+        \begin{textblock}{32}(5,25)
+            \parbox[c][32mm]{32mm}{%
+                \centering\includegraphics[width=14mm]{\stuttgart@thanksPageInstituteLogo}%
+            }
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageDepartmentLogo}{}{%
+        \begin{textblock}{32}(25,35)
+            \parbox[c][32mm]{32mm}{%
+                \centering\includegraphics[width=14mm]{\stuttgart@thanksPageDepartmentLogo}%
+            }
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageBigLogo}{}{%
+        \begin{textblock}{40}(15,50)
+            \parbox[c][40mm]{40mm}{%
+                \centering\includegraphics[width=34mm]{\stuttgart@thanksPageBigLogo}%
+            }
+        \end{textblock}
+    }
 }
 \newcommand*{\thanksframe}{%
     \miniframesoff
