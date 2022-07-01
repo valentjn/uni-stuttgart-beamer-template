@@ -337,10 +337,18 @@
                 \only<beamer>{\tikz\shade[shading=axis,bottom color=mittelblau,top color=hellblau,
                     shading angle=-45] (0,0) rectangle (\paperwidth,\paperheight);}
             \end{textblock}
-            \begin{textblock}{128}(14,-40)
-                \tikz\draw[white,fill=white] (0,0) circle (50mm);
+
+            \def\@circleRadius{\fpeval{0.35 * \@pageWidthMM}}
+            \edef\@circleX{\fpeval{\@pageWidthMM / 2 - \@circleRadius}}
+            \edef\@circleY{\fpeval{-0.7 * \@circleRadius}}
+            \edef\@textWidth{\fpeval{0.85 * 2 * \@circleRadius}}
+            \edef\@textOffsetX{\fpeval{(2 * \@circleRadius - \@textWidth) / 2}}
+            \edef\@textOffsetY{\fpeval{1.1 * \@circleRadius}}
+
+            \begin{textblock}{128}(\@circleX,\@circleY)
+                \tikz\draw[white,fill=white] (0,0) circle ({\@circleRadius mm});
             \end{textblock}
-            \begin{textblock}{90}(19,20)
+            \begin{textblock}{\@textWidth}(\fpeval{\@circleX + \@textOffsetX},\fpeval{\@circleY + \@textOffsetY})
                 \centering
                 {\usebeamerfont{title}\LARGE\color{anthrazit}#1\par}
             \end{textblock}
