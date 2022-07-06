@@ -72,16 +72,16 @@
 \DeclareStringOption[1]{thanksPageBigGraphicsScale}
 
 % graphics on the title page
-\DeclareStringOption[../gfx/logos/logo_us_white]{titlePageUniversityLogo}
-\DeclareStringOption[../gfx/logos/logo_ipvs]{titlePageInstituteLogo}
-\DeclareStringOption[../gfx/logos/logo_sgs]{titlePageDepartmentLogo}
-\DeclareStringOption[../gfx/logos/logo_simtech]{titlePageBigLogo}
+\DeclareStringOption[../gfx/logos/logo_university_stuttgart_white.pdf]{titlePageUniversityLogo}
+\DeclareStringOption{titlePageInstituteLogo}
+\DeclareStringOption{titlePageDepartmentLogo}
+\DeclareStringOption{titlePageBigLogo}
 
 % graphics on the thanks page
 \DeclareStringOption[../gfx/tikz/gfx_title]{thanksPageBigGraphics}
-\DeclareStringOption[../gfx/logos/logo_ipvs]{thanksPageInstituteLogo}
-\DeclareStringOption[../gfx/logos/logo_sgs]{thanksPageDepartmentLogo}
-\DeclareStringOption[../gfx/logos/logo_simtech]{thanksPageBigLogo}
+\DeclareStringOption{thanksPageInstituteLogo}
+\DeclareStringOption{thanksPageDepartmentLogo}
+\DeclareStringOption{thanksPageBigLogo}
 
 % process the options!
 \ProcessLocalKeyvalOptions*
@@ -161,38 +161,101 @@
 % title page
 \RequirePackage{tikz}
 \RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{graphicx}
+\RequirePackage{varwidth}
+\RequirePackage{xfp}
+\RequirePackage{calc}
+
+% Helper macro to convert a given length/dimension into a numeric value (without unit) optionally
+% converting into the desired unit first. If no unit is given, the returned number is meant in pt.
+% https://tex.stackexchange.com/a/541869
+% Example: \@dimToNum[cm]{\textwidth}
+\NewExpandableDocumentCommand{\@dimToNum}{O{pt}m}{%
+  % #1 (optional, default pt), #2 = length
+  \fpeval{(#2)/(1#1)}%
+}
+
 \setlength{\TPHorizModule}{1mm}
 \setlength{\TPVertModule}{1mm}
+
+
+\newlength{\@beamer@stuttgart@helperLengthA}
+\newlength{\@beamer@stuttgart@helperLengthB}
+
+\newcommand{\@pageWidthMM}{\@dimToNum[mm]{\paperwidth}}
+\newcommand{\@pageHeightMM}{\@dimToNum[mm]{\paperheight}}
+
 \defbeamertemplate*{title page}{customized}[1][]{
     \begin{textblock}{128}(0,0)
         \tikz\shade[shading=axis,bottom color=mittelblau,top color=hellblau,shading angle=-45] 
         (0,0) rectangle (\paperwidth,\paperheight);
     \end{textblock}
+
     \begin{textblock}{128}(5,5)
-        \includegraphics[height=9mm]{\stuttgart@titlePageUniversityLogo}
+        % Adjust the size of the logo based on the general frame size (within reasonable bounds)
+        \edef\@pageWidthCM{\@dimToNum[cm]{\paperwidth}}
+        \edef\@logoWidth{\fpeval{min(0.5 * \@pageWidthCM, max(4, 0.4 * \@pageWidthCM))}cm}
+        \includegraphics[width=\@logoWidth]{\stuttgart@titlePageUniversityLogo}
     \end{textblock}
-    \begin{textblock}{128}(40,20)
-        \tikz\draw[anthrazit,fill=anthrazit] (0,0) circle (50mm);
+
+    \edef\@titleCircleRadius{50}
+    \edef\@titleCircleX{\fpeval{\@pageWidthMM - 1.7*\@titleCircleRadius}}
+    \edef\@titleCircleY{\fpeval{\@pageHeightMM - 1.5*\@titleCircleRadius}}
+
+    \begin{textblock}{128}(\@titleCircleX,\@titleCircleY)
+        \tikz\draw[anthrazit,fill=anthrazit] (0,0) circle ({\@titleCircleRadius mm});
     \end{textblock}
+
+    % Draw the circle the author(s) is/are placed onto
     \expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{few}{%
-        \begin{textblock}{128}(40,17)
+        \begin{textblock}{128}(\@titleCircleX,\fpeval{\@titleCircleY - 3})
             \tikz\draw[white,fill=white] (0,0) circle (12mm);
         \end{textblock}%
     }{%
-        \begin{textblock}{128}(80,4)
+        \begin{textblock}{128}(\fpeval{\@titleCircleX + 40},\fpeval{\@titleCircleY - 14})
             \tikz\draw[white,fill=white] (0,0) circle (16mm);
         \end{textblock}%
     }
-    \begin{textblock}{128}(10,45)
-        \tikz\draw[white,fill=white] (0,0) circle (10mm);
-    \end{textblock}
-    \begin{textblock}{128}(25,50)
-        \tikz\draw[white,fill=white] (0,0) circle (10mm);
-    \end{textblock}
-    \begin{textblock}{128}(15,60)
-        \tikz\draw[white,fill=white] (0,0) circle (15mm);
-    \end{textblock}
-    \begin{textblock}{70}(55,45)
+
+    \ifdefempty{\stuttgart@titlePageInstituteLogo}{}{%
+            \begin{textblock}{128}(\fpeval{\@titleCircleX - 30},\fpeval{\@titleCircleY + 25})
+            \tikz\draw[white,fill=white] (0,0) circle (10mm);
+        \end{textblock}
+    }
+    \ifdefempty{\stuttgart@titlePageDepartmentLogo}{}{%
+        \begin{textblock}{128}(\fpeval{\@titleCircleX - 15},\fpeval{\@titleCircleY + 30})
+            \tikz\draw[white,fill=white] (0,0) circle (10mm);
+        \end{textblock}
+    }
+    \ifdefempty{\stuttgart@titlePageBigLogo}{}{%
+        \begin{textblock}{128}(\fpeval{\@titleCircleX - 25},\fpeval{\@titleCircleY + 40})
+            \tikz\draw[white,fill=white] (0,0) circle (15mm);
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@titlePageInstituteLogo}{}{%
+        \begin{textblock}{20}(\fpeval{\@titleCircleX - 30},\fpeval{\@titleCircleY + 25})
+            \parbox[c][20mm]{20mm}{%
+                \centering\includegraphics[width=10mm]{\stuttgart@titlePageInstituteLogo}%
+            }
+        \end{textblock}
+    }
+    \ifdefempty{\stuttgart@titlePageDepartmentLogo}{}{%
+        \begin{textblock}{20}(\fpeval{\@titleCircleX - 15},\fpeval{\@titleCircleY + 30})
+            \parbox[c][20mm]{20mm}{%
+                \centering\includegraphics[width=10mm]{\stuttgart@titlePageDepartmentLogo}%
+            }
+        \end{textblock}
+    }
+    \ifdefempty{\stuttgart@titlePageBigLogo}{}{%
+        \begin{textblock}{30}(\fpeval{\@titleCircleX - 25},\fpeval{\@titleCircleY + 40})
+            \parbox[c][30mm]{30mm}{%
+                \centering\includegraphics[width=26mm]{\stuttgart@titlePageBigLogo}%
+            }
+        \end{textblock}
+    }
+
+    \begin{textblock}{70}(\fpeval{\@titleCircleX + 15},\fpeval{\@titleCircleY + 25})
         %\vspace{\stuttgart@titlePageMarginAboveTitle}
         \parbox[c][45mm]{70mm}{%
             \raggedright%
@@ -211,36 +274,31 @@
             {\usebeamerfont{institute}\usebeamercolor[fg]{date}\insertinstitute\par}%
         }
     \end{textblock}
+
+    % Print the author(s) such that the name(s) is/are centered in the respective circle drawn before
     \expandafter\ifstrequal\expandafter{\stuttgart@titlePageNumberOfAuthors}{few}{%
-        \begin{textblock}{19}(45,17)
-            \parbox[c][24mm]{19mm}{%
-                \raggedright%
-                {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+        \begin{textblock}{24}(\@titleCircleX,\fpeval{\@titleCircleY - 3})
+            \parbox[c][24mm]{24mm}{%
+                \centering%
+                \begin{varwidth}{24mm}%
+                    \leavevmode%
+                    {\raggedright\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}%
+                \end{varwidth}%
             }
         \end{textblock}%
     }{%
-        \begin{textblock}{25}(84,4)
-            \parbox[c][32mm]{25mm}{%
-                \raggedright%
-                {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+        \begin{textblock}{25}(\fpeval{\@titleCircleX + 42},\fpeval{\@titleCircleY - 14})
+            % Since we expect to have to write multiple author names below each other, use a little
+            % offset to the left as to not start directly at the circle's border
+            \parbox[c][32mm]{30mm}{%
+                \centering%
+                \begin{varwidth}{30mm}%
+                    \leavevmode%
+                    {\raggedright\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}%
+                \end{varwidth}%
             }
         \end{textblock}%
     }
-    \begin{textblock}{20}(10,45)
-        \parbox[c][20mm]{20mm}{%
-            \centering\includegraphics[width=10mm]{\stuttgart@titlePageInstituteLogo}%
-        }
-    \end{textblock}
-    \begin{textblock}{20}(25,50)
-        \parbox[c][20mm]{20mm}{%
-            \centering\includegraphics[width=10mm]{\stuttgart@titlePageDepartmentLogo}%
-        }
-    \end{textblock}
-    \begin{textblock}{30}(15,60)
-        \parbox[c][30mm]{30mm}{%
-            \centering\includegraphics[width=26mm]{\stuttgart@titlePageBigLogo}%
-        }
-    \end{textblock}
 }
 
 % ------------------------------------------------------------------------------
@@ -283,10 +341,18 @@
                 \only<beamer>{\tikz\shade[shading=axis,bottom color=mittelblau,top color=hellblau,
                     shading angle=-45] (0,0) rectangle (\paperwidth,\paperheight);}
             \end{textblock}
-            \begin{textblock}{128}(14,-40)
-                \tikz\draw[white,fill=white] (0,0) circle (50mm);
+
+            \def\@circleRadius{\fpeval{0.35 * \@pageWidthMM}}
+            \edef\@circleX{\fpeval{\@pageWidthMM / 2 - \@circleRadius}}
+            \edef\@circleY{\fpeval{-0.7 * \@circleRadius}}
+            \edef\@textWidth{\fpeval{0.85 * 2 * \@circleRadius}}
+            \edef\@textOffsetX{\fpeval{(2 * \@circleRadius - \@textWidth) / 2}}
+            \edef\@textOffsetY{\fpeval{1.1 * \@circleRadius}}
+
+            \begin{textblock}{128}(\@circleX,\@circleY)
+                \tikz\draw[white,fill=white] (0,0) circle ({\@circleRadius mm});
             \end{textblock}
-            \begin{textblock}{90}(19,20)
+            \begin{textblock}{\@textWidth}(\fpeval{\@circleX + \@textOffsetX},\fpeval{\@circleY + \@textOffsetY})
                 \centering
                 {\usebeamerfont{title}\LARGE\color{anthrazit}#1\par}
             \end{textblock}
@@ -344,11 +410,23 @@
 {%
   \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
   \end{beamercolorbox}
+
   \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
     leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
-    {\usebeamerfont{title in head/foot}\insertshorttitle}%
-    \hfill%
-    \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+    \edef\@availableSpace{\fpeval{\@pageWidthMM - 6}}
+    \def\@shortTitle{\usebeamerfont{title in head/foot}\insertshorttitle}
+    \def\@shortAuthor{\usebeamerfont{author in head/foot}\insertshortauthor}
+    \settowidth{\@beamer@stuttgart@helperLengthA}{\@shortTitle}
+    \settowidth{\@beamer@stuttgart@helperLengthB}{\@shortAuthor}
+    \edef\@titleWidth{\@dimToNum[mm]{\@beamer@stuttgart@helperLengthA}}
+    \edef\@authorWidth{\@dimToNum[mm]{\@beamer@stuttgart@helperLengthB}}
+    % Calculate the spacing between title and author such that the author name will end
+    % up in the dead center of the footer (if possible)
+    \edef\@titleAuthorSpacing{\fpeval{max(4, \@availableSpace / 2 - \@titleWidth - \@authorWidth / 2)}}
+
+    \@shortTitle%
+    \hspace{\@titleAuthorSpacing mm}%
+    \leavevmode{\@shortAuthor}%
     \hfill%
     {%
       \usebeamerfont{frame number}\usebeamercolor[fg]{frame number}%
@@ -510,44 +588,68 @@
         \only<beamer>{\tikz\shade[shading=axis,bottom color=mittelblau,top color=hellblau,
         shading angle=-45] (0,0) rectangle (\paperwidth,\paperheight);}
     \end{textblock}
-    \begin{textblock}{128}(5,5)
+
+    \begin{textblock}{128}(5,10)
         \usebeamerfont{title}%
         \color{white}%
         \only<beamer>{\color{white}}%
         \only<handout>{\color{anthrazit}}%
         Thank you for your attention!\usebeamercolor[fg]{normal text}
     \end{textblock}
-    \begin{textblock}{128}(45,15)
+
+    \edef\@mainCircleRadius{38}
+    \edef\@mainCircleX{\fpeval{\@pageWidthMM - 2.2 * \@mainCircleRadius}}
+    \edef\@mainCircleY{\fpeval{\@pageHeightMM - 2 * \@mainCircleRadius - 0.02 * \@pageHeightMM}}
+
+    \begin{textblock}{128}(\@mainCircleX,\@mainCircleY)
         \begin{tikzpicture}
-            \draw[white,fill=white] (0,0) circle (38mm);
-            \clip (0,0) circle (37.5mm);
+            \draw[white,fill=white] (0,0) circle ({\@mainCircleRadius mm});
+            \clip (0,0) circle ({\fpeval{\@mainCircleRadius - 0.5}mm});
             \node[inner sep=0pt, outer sep=0pt] at (0,0) {\includegraphics[scale=\stuttgart@thanksPageBigGraphicsScale]{\stuttgart@thanksPageBigGraphics}};
         \end{tikzpicture}
     \end{textblock}
-    \begin{textblock}{128}(5,25)
-        \tikz\draw[white,fill=white] (0,0) circle (16mm);
-    \end{textblock}
-    \begin{textblock}{128}(25,35)
-        \tikz\draw[white,fill=white] (0,0) circle (16mm);
-    \end{textblock}
-    \begin{textblock}{128}(15,50)
-        \tikz\draw[white,fill=white] (0,0) circle (20mm);
-    \end{textblock}
-    \begin{textblock}{32}(5,25)
-        \parbox[c][32mm]{32mm}{%
-            \centering\includegraphics[width=14mm]{\stuttgart@thanksPageInstituteLogo}%
-        }
-    \end{textblock}
-    \begin{textblock}{32}(25,35)
-        \parbox[c][32mm]{32mm}{%
-            \centering\includegraphics[width=14mm]{\stuttgart@thanksPageDepartmentLogo}%
-        }
-    \end{textblock}
-    \begin{textblock}{40}(15,50)
-        \parbox[c][40mm]{40mm}{%
-            \centering\includegraphics[width=34mm]{\stuttgart@thanksPageBigLogo}%
-        }
-    \end{textblock}
+
+    \ifdefempty{\stuttgart@thanksPageInstituteLogo}{}{%
+        \begin{textblock}{128}(\fpeval{\@mainCircleX - 40},\fpeval{\@mainCircleY + 10})
+            \tikz\draw[white,fill=white] (0,0) circle (16mm);
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageDepartmentLogo}{}{%
+        \begin{textblock}{128}(\fpeval{\@mainCircleX - 20},\fpeval{\@mainCircleY + 20})
+            \tikz\draw[white,fill=white] (0,0) circle (16mm);
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageBigLogo}{}{%
+        \begin{textblock}{128}(\fpeval{\@mainCircleX - 30},\fpeval{\@mainCircleY + 35})
+            \tikz\draw[white,fill=white] (0,0) circle (20mm);
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageInstituteLogo}{}{%
+        \begin{textblock}{32}(\fpeval{\@mainCircleX - 40},\fpeval{\@mainCircleY + 10})
+            \parbox[c][32mm]{32mm}{%
+                \centering\includegraphics[width=14mm]{\stuttgart@thanksPageInstituteLogo}%
+            }
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageDepartmentLogo}{}{%
+        \begin{textblock}{32}(\fpeval{\@mainCircleX - 20},\fpeval{\@mainCircleY + 20})
+            \parbox[c][32mm]{32mm}{%
+                \centering\includegraphics[width=14mm]{\stuttgart@thanksPageDepartmentLogo}%
+            }
+        \end{textblock}
+    }
+
+    \ifdefempty{\stuttgart@thanksPageBigLogo}{}{%
+        \begin{textblock}{40}(\fpeval{\@mainCircleX -30},\fpeval{\@mainCircleY + 35})
+            \parbox[c][40mm]{40mm}{%
+                \centering\includegraphics[width=34mm]{\stuttgart@thanksPageBigLogo}%
+            }
+        \end{textblock}
+    }
 }
 \newcommand*{\thanksframe}{%
     \miniframesoff
