@@ -471,8 +471,6 @@
 \colorlet{pbgray}{mittelblau}
 
 \def\progressbar@progressbar{}  % the progress bar
-\newcount\progressbar@tmpcounta % auxiliary counter
-\newcount\progressbar@tmpcountb % auxiliary counter
 \newdimen\progressbar@pbht      % progressbar height
 \newdimen\progressbar@pbwd      % progressbar width
 \newdimen\progressbar@tmpdim    % auxiliary dimension
@@ -481,11 +479,9 @@
 \progressbar@pbht=0.4ex
 
 \def\progressbar@progressbar{%
-    \progressbar@tmpcounta=\insertframenumber
-    \progressbar@tmpcountb=\inserttotalframenumber
     \progressbar@tmpdim=\progressbar@pbwd
-    \multiply\progressbar@tmpdim by \progressbar@tmpcounta
-    \divide\progressbar@tmpdim by \progressbar@tmpcountb
+    \divide\progressbar@tmpdim by \inserttotalframenumber
+    \multiply\progressbar@tmpdim by \insertframenumber
     
     \begin{tikzpicture}
         \shade[top color=pbgray,bottom color=pbgray,middle color=pbgray]
